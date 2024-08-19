@@ -30,6 +30,9 @@ private:
 
 	void OnZoom(float Axis);
 
+	void OnRoll();
+	void OnEvade();
+
 private:
 	void PriamryAttack();
 
@@ -57,6 +60,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	UAnimMontage* TertiaryActionMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Common")
+	UAnimMontage* BackStepMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Common")
+	UAnimMontage* RollMontage;
 
 private:
 	int32 ComboCount;

@@ -53,6 +53,9 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("LookUp", this, &ACPlayer::OnLookUp);
 	PlayerInputComponent->BindAxis("Zoom", this, &ACPlayer::OnZoom);
 
+	PlayerInputComponent->BindAction("Roll", EInputEvent::IE_Pressed, this, &ACPlayer::OnRoll);
+	PlayerInputComponent->BindAction("Evade", EInputEvent::IE_Released, this, &ACPlayer::OnEvade);
+
 	//PlayerInputComponent->BindAction("OneHand", IE_Pressed, this, &ACPlayer::OnOneHand);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ACPlayer::PriamryAttack);
@@ -91,6 +94,22 @@ void ACPlayer::OnLookUp(float Axis)
 
 void ACPlayer::OnZoom(float Axis)
 {
+}
+
+void ACPlayer::OnRoll()
+{
+	if (RollMontage)
+	{
+		PlayAnimMontage(RollMontage);
+	}
+}
+
+void ACPlayer::OnEvade()
+{
+	if (BackStepMontage)
+	{
+		PlayAnimMontage(BackStepMontage);
+	}
 }
 
 void ACPlayer::PriamryAttack()
