@@ -6,6 +6,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UAnimMontage;
 
 UCLASS()
 class STAGESLAYER_API ACPlayer : public ACharacter
@@ -29,6 +30,17 @@ private:
 
 	void OnZoom(float Axis);
 
+private:
+	void PriamryAttack();
+
+private:
+	void PrimaryAction();
+	void SecondaryAction();
+	void TertiaryAction();
+
+public:
+	void ResetComboCount();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
@@ -36,4 +48,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCameraComponent* CameraComp;
 
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	UAnimMontage* PrimaryActionMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	UAnimMontage* SecondaryActionMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	UAnimMontage* TertiaryActionMontage;
+
+private:
+	int32 ComboCount;
 };

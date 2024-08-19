@@ -32,6 +32,8 @@ ACPlayer::ACPlayer()
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
+
+	ComboCount = 0;
 }
 
 void ACPlayer::BeginPlay()
@@ -50,6 +52,10 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Turn", this, &ACPlayer::OnTurn);
 	PlayerInputComponent->BindAxis("LookUp", this, &ACPlayer::OnLookUp);
 	PlayerInputComponent->BindAxis("Zoom", this, &ACPlayer::OnZoom);
+
+	//PlayerInputComponent->BindAction("OneHand", IE_Pressed, this, &ACPlayer::OnOneHand);
+
+	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ACPlayer::PriamryAttack);
 
 }
 
@@ -87,3 +93,49 @@ void ACPlayer::OnZoom(float Axis)
 {
 }
 
+void ACPlayer::PriamryAttack()
+{
+	switch (ComboCount)
+	{
+	case 0:
+		PrimaryAction();
+		ComboCount++;
+		break;
+	case 1:
+		SecondaryAction();
+		ComboCount++;
+		break;
+	case 2:
+		TertiaryAction();
+		break;
+	}
+}
+
+void ACPlayer::PrimaryAction()
+{
+	if (PrimaryActionMontage)
+	{
+		PlayAnimMontage(PrimaryActionMontage);
+	}
+}
+
+void ACPlayer::SecondaryAction()
+{
+	if (SecondaryActionMontage)
+	{
+		PlayAnimMontage(SecondaryActionMontage);
+	}
+}
+
+void ACPlayer::TertiaryAction()
+{
+	if (TertiaryActionMontage)
+	{
+		PlayAnimMontage(TertiaryActionMontage);
+	}
+}
+
+void ACPlayer::ResetComboCount()
+{
+	ComboCount = 0;
+}
