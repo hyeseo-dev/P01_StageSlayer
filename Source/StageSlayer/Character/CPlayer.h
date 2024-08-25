@@ -7,6 +7,8 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UAnimMontage;
+class UCAttributeComponent;
+class UCStateComponent;
 
 UCLASS()
 class STAGESLAYER_API ACPlayer : public ACharacter
@@ -50,6 +52,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCameraComponent* CameraComp;
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
+	UCAttributeComponent* AttributeComp;
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
+	UCStateComponent* StateComp;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")

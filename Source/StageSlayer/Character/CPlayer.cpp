@@ -3,12 +3,18 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CAttributeComponent.h"
+#include "Components/CStateComponent.h"
 
 ACPlayer::ACPlayer()
 {
 	//Create Scene Component
 	CHelpers::CreateSceneComponent(this, &SpringArmComp, "SpringArmComp", GetMesh());
 	CHelpers::CreateSceneComponent(this, &CameraComp, "CameraComp", SpringArmComp);
+
+	//Create Actor Component
+	CHelpers::CreateActorComponent(this, &AttributeComp, "AttributeComp");
+	CHelpers::CreateActorComponent(this, &StateComp, "StateComp");
 
 	//Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
