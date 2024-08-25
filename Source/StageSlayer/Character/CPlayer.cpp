@@ -4,7 +4,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CAttributeComponent.h"
-#include "Components/CStateComponent.h"
+#include "Components/CMontagesComponent.h"
 
 ACPlayer::ACPlayer()
 {
@@ -15,6 +15,7 @@ ACPlayer::ACPlayer()
 	//Create Actor Component
 	CHelpers::CreateActorComponent(this, &AttributeComp, "AttributeComp");
 	CHelpers::CreateActorComponent(this, &StateComp, "StateComp");
+	CHelpers::CreateActorComponent(this, &MontagesComp, "MontagesComp");
 
 	//Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
@@ -46,6 +47,7 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	StateComp->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged);
 }
 
 
@@ -112,9 +114,78 @@ void ACPlayer::OnRoll()
 
 void ACPlayer::OnEvade()
 {
-	if (BackStepMontage)
+	CheckFalse(StateComp->IsIdleMode());
+	CheckFalse(AttributeComp->IsCanMove());
+
+	if (InputComponent->GetAxisValue("MoveForward") < 0.f)
 	{
-		PlayAnimMontage(BackStepMontage);
+
+		StateComp->SetBackstepMode();
+		return;
+	}
+
+	StateComp->SetRollMode();
+}
+
+
+void ACPlayer::Begin_Roll()
+{
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	FVector Start = GetActorLocation();
+	FVector Target;
+
+	if (GetVelocity().IsNearlyZero())
+	{
+		Target = Start + CameraComp->GetForwardVector().GetSafeNormal2D();
+	}
+	else
+	{
+		Target = Start + GetVelocity().GetSafeNormal2D();
+	}
+
+	FRotator ForceRotation = UKismetMathLibrary::FindLookAtRotation(Start, Target);
+	SetActorRotation(ForceRotation);
+
+	MontagesComp->PlayRoll();
+}
+
+void ACPlayer::Begin_Backstep()
+{
+	bUseControllerRotationYaw = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	MontagesComp->PlayBackstep();
+}
+
+void ACPlayer::End_Roll()
+{
+	StateComp->SetIdleMode();
+}
+
+void ACPlayer::End_Backstep()
+{
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	StateComp->SetIdleMode();
+}
+
+void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
+{
+	switch (InNewType)
+	{
+	case EStateType::Roll:
+	{
+		Begin_Roll();
+	}
+	break;
+	case EStateType::Backstep:
+	{
+		Begin_Backstep();
+	}
+	break;
 	}
 }
 
