@@ -11,6 +11,7 @@ class UAnimMontage;
 class UCAttributeComponent;
 class UCStateComponent;
 class UCMontagesComponent;
+class UCActionComponent;
 
 UCLASS()
 class STAGESLAYER_API ACPlayer : public ACharacter
@@ -75,6 +76,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCMontagesComponent* MontagesComp;
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
+	UCActionComponent* ActionComp;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")

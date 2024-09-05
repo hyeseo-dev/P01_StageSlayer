@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CAttributeComponent.h"
 #include "Components/CMontagesComponent.h"
+#include "Components/CActionComponent.h"
 
 ACPlayer::ACPlayer()
 {
@@ -16,6 +17,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent(this, &AttributeComp, "AttributeComp");
 	CHelpers::CreateActorComponent(this, &StateComp, "StateComp");
 	CHelpers::CreateActorComponent(this, &MontagesComp, "MontagesComp");
+	CHelpers::CreateActorComponent(this, &ActionComp, "ActionComp");
 
 	//Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
@@ -106,10 +108,7 @@ void ACPlayer::OnZoom(float Axis)
 
 void ACPlayer::OnRoll()
 {
-	if (RollMontage)
-	{
-		PlayAnimMontage(RollMontage);
-	}
+	ActionComp->StartActionByName(this, "Roll");
 }
 
 void ACPlayer::OnEvade()
