@@ -1,5 +1,5 @@
 #include "CAnimNotify_ResetCombo.h"
-#include "Character/CPlayer.h"
+#include "Actions/CAction_MeleeAttack.h"
 
 FString UCAnimNotify_ResetCombo::GetNotifyName_Implementation() const
 {
@@ -9,10 +9,10 @@ FString UCAnimNotify_ResetCombo::GetNotifyName_Implementation() const
 void UCAnimNotify_ResetCombo::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	Super::Notify(MeshComp, Animation);
-	ACPlayer* PC = Cast<ACPlayer>(MeshComp->GetOwner());
-	if (PC)
+	ACAction_MeleeAttack* Melee = Cast<ACAction_MeleeAttack>(MeshComp->GetOwner());
+	if (Melee)
 	{
-		PC->ResetComboCount();
+		Melee->ResetCombo();
 	}
 
 }

@@ -38,8 +38,6 @@ ACPlayer::ACPlayer()
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
-
-	ComboCount = 0;
 }
 
 void ACPlayer::BeginPlay()
@@ -116,47 +114,18 @@ void ACPlayer::OnEvade()
 
 void ACPlayer::PriamryAttack()
 {
-	switch (ComboCount)
-	{
-	case 0:
-		PrimaryAction();
-		ComboCount++;
-		break;
-	case 1:
-		SecondaryAction();
-		ComboCount++;
-		break;
-	case 2:
-		TertiaryAction();
-		break;
-	}
+	PrimaryAction();
 }
 
 void ACPlayer::PrimaryAction()
 {
-	if (PrimaryActionMontage)
-	{
-		PlayAnimMontage(PrimaryActionMontage);
-	}
+	ActionComp->StartActionByName(this, "OneHand");
 }
 
 void ACPlayer::SecondaryAction()
 {
-	if (SecondaryActionMontage)
-	{
-		PlayAnimMontage(SecondaryActionMontage);
-	}
 }
 
 void ACPlayer::TertiaryAction()
 {
-	if (TertiaryActionMontage)
-	{
-		PlayAnimMontage(TertiaryActionMontage);
-	}
-}
-
-void ACPlayer::ResetComboCount()
-{
-	ComboCount = 0;
 }
