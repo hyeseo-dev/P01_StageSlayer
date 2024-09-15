@@ -2,14 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Components/CStateComponent.h"
 #include "CPlayer.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 class UAnimMontage;
 class UCAttributeComponent;
-class UCStateComponent;
 class UCMontagesComponent;
 class UCActionComponent;
 
@@ -39,14 +37,6 @@ private:
 	void OnEvade();
 
 private:
-	void Begin_Roll();
-	void Begin_Backstep();
-
-public:
-	void End_Roll();
-	void End_Backstep();
-
-private:
 	void PriamryAttack();
 
 private:
@@ -57,10 +47,6 @@ private:
 public:
 	void ResetComboCount();
 
-private:
-	UFUNCTION()
-	void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
-
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
@@ -70,12 +56,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCAttributeComponent* AttributeComp;
-
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
-	UCStateComponent* StateComp;
-
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
-	UCMontagesComponent* MontagesComp;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCActionComponent* ActionComp;
@@ -89,12 +69,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	UAnimMontage* TertiaryActionMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Common")
-	UAnimMontage* BackStepMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Common")
-	UAnimMontage* RollMontage;
 
 private:
 	int32 ComboCount;
