@@ -7,6 +7,8 @@
 
 class ACAction;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActionStateChanged, UCActionComponent*, OwningComp, ACAction*, Action);
+
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class STAGESLAYER_API UCActionComponent : public UActorComponent
 {
@@ -39,6 +41,12 @@ public:
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameplayTag")
 	FGameplayTagContainer ActiveGameplayTags;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnActionStateChanged OnActionStarted;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnActionStateChanged OnActionStoppted;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Action")

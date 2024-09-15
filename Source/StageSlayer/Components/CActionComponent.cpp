@@ -1,4 +1,5 @@
 #include "CActionComponent.h"
+#include "Global.h"
 #include "Actions/CAction.h"
 
 UCActionComponent::UCActionComponent()
@@ -66,8 +67,11 @@ bool UCActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 	{
 		if (Action && Action->ActionName == ActionName)
 		{
-			Action->StartAction(Instigator);
-			return true;
+			if (!Action->CanStart(Instigator))
+			{
+				Action->StartAction(Instigator);
+				return true;
+			}
 		}
 	}
 	return false;
@@ -79,8 +83,11 @@ bool UCActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 	{
 		if (Action && Action->ActionName == ActionName)
 		{
-			Action->StopAction(Instigator);
-			return true;
+			if (Action->IsRunning())
+			{
+				Action->StopAction(Instigator);
+				return true;
+			}
 		}
 	}
 	return false;
